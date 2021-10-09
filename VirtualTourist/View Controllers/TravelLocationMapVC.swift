@@ -10,7 +10,7 @@ import MapKit
 
 
 
-class TravelLocationMapVC: UIViewController {
+class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -18,7 +18,7 @@ class TravelLocationMapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        mapView.delegate = self
     }
     
 

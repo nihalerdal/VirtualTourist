@@ -12,6 +12,7 @@ class PhotoAlbumVC: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var renewButton: UIButton!
     
     override func viewDidLoad() {
         
