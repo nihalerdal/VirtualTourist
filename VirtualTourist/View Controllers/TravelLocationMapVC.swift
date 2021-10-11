@@ -21,7 +21,6 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
     }
     
-
     /*
     // MARK: - Navigation
 
