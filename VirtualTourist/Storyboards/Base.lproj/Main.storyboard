@@ -83,6 +83,7 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ghE-bI-V9X">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <gestureRecognizers/>
                             </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="lVD-Gs-G03"/>
@@ -96,7 +97,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="GIE-oL-c9v"/>
                     <connections>
-                        <outlet property="mapView" destination="ghE-bI-V9X" id="wJP-qj-HyN"/>
+                        <outlet property="mapView" destination="ghE-bI-V9X" id="dDm-mf-pa4"/>
                         <segue destination="2ey-g0-i9H" kind="show" id="6tI-GD-Gqh"/>
                     </connections>
                 </viewController>
