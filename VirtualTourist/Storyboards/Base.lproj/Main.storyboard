@@ -12,13 +12,13 @@
         <!--Photo AlbumVC-->
         <scene sceneID="dwr-jD-hug">
             <objects>
-                <viewController id="2ey-g0-i9H" customClass="PhotoAlbumVC" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoAlbumVC" id="2ey-g0-i9H" customClass="PhotoAlbumVC" customModule="VirtualTourist" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Okx-Ae-ggr">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Nbw-y1-eAW">
-                                <rect key="frame" x="0.0" y="243" width="414" height="569"/>
+                                <rect key="frame" x="0.0" y="189" width="414" height="569"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="569" id="je6-LG-Ku7"/>
@@ -41,10 +41,10 @@
                                 </cells>
                             </collectionView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UFP-aY-cpY">
-                                <rect key="frame" x="0.0" y="88" width="414" height="147"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="181"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRo-8B-ivM">
-                                <rect key="frame" x="155" y="822" width="104" height="30"/>
+                                <rect key="frame" x="155" y="768" width="104" height="30"/>
                                 <state key="normal" title="New Collection"/>
                             </button>
                         </subviews>
@@ -98,7 +98,7 @@
                     <navigationItem key="navigationItem" id="GIE-oL-c9v"/>
                     <connections>
                         <outlet property="mapView" destination="ghE-bI-V9X" id="dDm-mf-pa4"/>
-                        <segue destination="2ey-g0-i9H" kind="show" id="6tI-GD-Gqh"/>
+                        <segue destination="2ey-g0-i9H" kind="presentation" identifier="GetPhotoAlbumSegue" id="6tI-GD-Gqh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gay-Kt-pVx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

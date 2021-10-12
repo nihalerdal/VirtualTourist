@@ -14,6 +14,8 @@ class PhotoAlbumVC: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
     
+    var annotation: MKAnnotation!
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()

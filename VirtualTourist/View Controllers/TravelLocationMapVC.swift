@@ -42,15 +42,30 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
         }
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    //pin view decoration - right callout accessory view
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let reuseId = "pin"
+        
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
+        if  pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView?.canShowCallout = true
+            pinView?.tintColor = .red
+            pinView?.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }else{
+            pinView?.annotation = annotation
+        }
+        return pinView
     }
-    */
-
+    
+    //navigate to PhotoAlbumVC
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as? PhotoAlbumVC {
+            vc.annotation = view.annotation
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
 }
