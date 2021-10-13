@@ -70,4 +70,15 @@ class FlickerClient{
         }
     }
     
+    
+    class func downloadPhotos(serverId: String, id: String, secret: String, completion: @escaping (Data?, Error?)-> Void){
+        
+        let task = URLSession.shared.dataTask(with: Endpoints.getUrls(serverId, id, secret).url) { data, response, error in
+            DispatchQueue.main.async {
+                completion(data, error)
+                print("album downloaded")
+            }
+        }
+        task.resume()
+    }
 }
