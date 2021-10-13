@@ -18,6 +18,7 @@
 		956A7DCA271258B000D93564 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A7DC9271258B000D93564 /* CollectionViewCell.swift */; };
 		95FF2A2A2714F1E000D465EC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A292714F1E000D465EC /* DataController.swift */; };
 		95FF2A2E271654E900D465EC /* FlickerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A2D271654E900D465EC /* FlickerClient.swift */; };
+		95FF2A3327166ED500D465EC /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A3227166ED500D465EC /* PhotoResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		956A7DC9271258B000D93564 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		95FF2A292714F1E000D465EC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		95FF2A2D271654E900D465EC /* FlickerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickerClient.swift; sourceTree = "<group>"; };
+		95FF2A3227166ED500D465EC /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		95FF2A312716556C00D465EC /* Responses */ = {
 			isa = PBXGroup;
 			children = (
+				95FF2A3227166ED500D465EC /* PhotoResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95FF2A3327166ED500D465EC /* PhotoResponse.swift in Sources */,
 				95FF2A2A2714F1E000D465EC /* DataController.swift in Sources */,
 				956A7DAC26EB705C00D93564 /* AppDelegate.swift in Sources */,
 				956A7DC7271248C100D93564 /* VirtualTourist.xcdatamodeld in Sources */,
