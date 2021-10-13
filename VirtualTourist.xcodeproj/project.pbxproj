@@ -103,8 +103,8 @@
 			children = (
 				956A7DC5271248C100D93564 /* VirtualTourist.xcdatamodeld */,
 				95FF2A292714F1E000D465EC /* DataController.swift */,
-				95FF2A302716554A00D465EC /* Network */,
 				95FF2A2F2716550300D465EC /* FlickerClient */,
+				95FF2A302716554A00D465EC /* Network */,
 			);
 			path = Model;
 			sourceTree = "<group>";
