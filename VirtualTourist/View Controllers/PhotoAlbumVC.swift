@@ -22,6 +22,9 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate{
         mapView.delegate = self
         mapView.addAnnotation(annotation)
         
+        //center the pin
+        let coordinate =  CLLocationCoordinate2D(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        mapView.setCenter(coordinate, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

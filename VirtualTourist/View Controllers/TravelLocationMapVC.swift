@@ -24,6 +24,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        mapView.isUserInteractionEnabled = true
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longTap(gesture: )))
         mapView.addGestureRecognizer(gestureRecognizer)
    
@@ -62,6 +63,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
     
     //navigate to PhotoAlbumVC
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        mapView.deselectAnnotation(view.annotation, animated: false)
         if let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as? PhotoAlbumVC {
             vc.annotation = view.annotation
             navigationController?.pushViewController(vc, animated: true)
