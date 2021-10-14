@@ -16,6 +16,7 @@
 		956A7DC226EB717E00D93564 /* PhotoAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A7DC126EB717E00D93564 /* PhotoAlbumVC.swift */; };
 		956A7DC7271248C100D93564 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 956A7DC5271248C100D93564 /* VirtualTourist.xcdatamodeld */; };
 		956A7DCA271258B000D93564 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A7DC9271258B000D93564 /* CollectionViewCell.swift */; };
+		958F774C2718DDDE008D2F69 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 958F774B2718DDDE008D2F69 /* DataModel.swift */; };
 		95FF2A2A2714F1E000D465EC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A292714F1E000D465EC /* DataController.swift */; };
 		95FF2A2E271654E900D465EC /* FlickerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A2D271654E900D465EC /* FlickerClient.swift */; };
 		95FF2A3327166ED500D465EC /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF2A3227166ED500D465EC /* PhotoResponse.swift */; };
@@ -33,6 +34,7 @@
 		956A7DC126EB717E00D93564 /* PhotoAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumVC.swift; sourceTree = "<group>"; };
 		956A7DC6271248C100D93564 /* VirtualTourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTourist.xcdatamodel; sourceTree = "<group>"; };
 		956A7DC9271258B000D93564 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		958F774B2718DDDE008D2F69 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		95FF2A292714F1E000D465EC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		95FF2A2D271654E900D465EC /* FlickerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickerClient.swift; sourceTree = "<group>"; };
 		95FF2A3227166ED500D465EC /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				956A7DC5271248C100D93564 /* VirtualTourist.xcdatamodeld */,
 				95FF2A292714F1E000D465EC /* DataController.swift */,
+				958F774B2718DDDE008D2F69 /* DataModel.swift */,
 				95FF2A2F2716550300D465EC /* FlickerClient */,
 				95FF2A302716554A00D465EC /* Network */,
 			);
@@ -208,6 +211,7 @@
 				956A7DAC26EB705C00D93564 /* AppDelegate.swift in Sources */,
 				956A7DC7271248C100D93564 /* VirtualTourist.xcdatamodeld in Sources */,
 				956A7DCA271258B000D93564 /* CollectionViewCell.swift in Sources */,
+				958F774C2718DDDE008D2F69 /* DataModel.swift in Sources */,
 				956A7DC226EB717E00D93564 /* PhotoAlbumVC.swift in Sources */,
 				95FF2A2E271654E900D465EC /* FlickerClient.swift in Sources */,
 				956A7DAE26EB705C00D93564 /* SceneDelegate.swift in Sources */,
