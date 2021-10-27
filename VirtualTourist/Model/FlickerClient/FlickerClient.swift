@@ -10,7 +10,7 @@ import Foundation
 class FlickerClient{
     
     enum Endpoints {
-        static let base = "https://www.flickr.com/services/rest/?method=flickr.photos.search"
+        static let base = "https://api.flickr.com/services/rest/?method=flickr.photos.search"
         
         case getPhotos(Double, Double)
         case getUrls(String, String, String)
@@ -23,7 +23,7 @@ class FlickerClient{
             
             
             switch self {
-            case .getPhotos(let latitude, let longitude): return Endpoints.base + "&api_key=\(Auth.apikey)&lat=\(latitude)&lon=\(longitude)"
+            case .getPhotos(let latitude, let longitude): return Endpoints.base + "&api_key=\(Auth.apikey)&lat=\(latitude)&lon=\(longitude)&per_page=20&page=\(Int.random(in: 1...10))&format=json&nojsoncallback=1"
             case .getUrls(let serverId, let id, let secret): return "https://live.staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
             }
         }
@@ -42,8 +42,9 @@ class FlickerClient{
                 }
                 return
             }
-            
+
             let decoder = JSONDecoder()
+            print(String(data: data, encoding: .utf8)!) //to printo out the data-- DONT FORGETTT!!!
             do {
                 let responseObject = try decoder.decode(ResponseType.self, from: data)
                 DispatchQueue.main.async {
@@ -60,10 +61,11 @@ class FlickerClient{
         return task
     }
     
-    class func getPhotos(latitude: Double, longitude: Double, completion: @escaping (Photos?, Error?) -> Void ){
+    class func getPhotos(latitude: Double, longitude: Double, completion: @escaping (PhotoResponse?, Error?) -> Void ){
         taskForGETRequest(url: Endpoints.getPhotos(latitude, longitude).url, responseType: PhotoResponse.self) { response, error in
             if let response = response {
-                completion(response.photos, nil)
+                completion(response.self, nil)
+                print(response)
             }else {
                 completion(nil, error)
             }

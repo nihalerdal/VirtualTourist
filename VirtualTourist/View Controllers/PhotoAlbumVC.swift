@@ -81,7 +81,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     func getPhotos(){
         FlickerClient.getPhotos(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude) { response, error in
             if error == nil {
-                DataModel.photos = (response?.photo)!
+                DataModel.photos = (response?.photos.photo)!
                 print("lat: \(self.annotation.coordinate.latitude), lon:\(self.annotation.coordinate.longitude)")
             }else{
                 error?.localizedDescription

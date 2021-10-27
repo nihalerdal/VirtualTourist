@@ -11,13 +11,18 @@ struct PhotoResponse: Codable {
     
     let photos: Photos
     let status: String
+    
+    enum CodingKeys: String, CodingKey{
+        case photos = "photos"
+        case status = "stat"
+    }
 }
 
 struct Photos : Codable {
-    let page : String
-    let pages: String
-    let perPage: String
-    let total: String
+    let page : Int
+    let pages: Int
+    let perpage: Int
+    let total: Int
     let photo: [FlickerPhoto]
 }
 
@@ -26,8 +31,9 @@ struct FlickerPhoto: Codable {
     let owner: String
     let secret: String
     let server: String
+    let farm: Int
     let title: String
-    let ispublic: String
-    let isfriend: String
-    let isfamily: String
+    let ispublic: Int
+    let isfriend: Int
+    let isfamily: Int
 }
