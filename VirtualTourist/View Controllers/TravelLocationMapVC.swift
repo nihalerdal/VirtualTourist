@@ -7,19 +7,24 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 
-class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
+class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
-    var dataController : DataController?
-
+    
+    var dataController : DataController!
+    var fetchedResultsController: NSFetchedResultsController<Pin>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mapView.delegate = self
         mapView.isUserInteractionEnabled = true
+        fetchedResultsController.delegate = self
+        
+        setupFetchedResultsController()
         
     }
     
@@ -39,6 +44,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
+            persistPin(lat: coordinate.latitude, lon: coordinate.longitude)
             
         }
     }
@@ -70,4 +76,27 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate {
         }
     }
     
+    func persistPin(lat: Double, lon: Double){
+        let pin = Pin(context: dataController!.viewContext)
+        pin.latitude = lat
+        pin.longitude = lon
+        pin.creationDate = Date()
+        
+        try? dataController?.viewContext.save()
+    }
+    
+    fileprivate func setupFetchedResultsController() {
+        //creat fetchRequest
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
+        }
+    }
 }
