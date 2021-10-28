@@ -20,6 +20,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         super.viewDidLoad()
         
         collectionView.delegate = self
+        collectionView.dataSource = self
         mapView.delegate = self
         mapView.addAnnotation(annotation)
         
