@@ -22,7 +22,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         
         mapView.delegate = self
         mapView.isUserInteractionEnabled = true
-        fetchedResultsController.delegate = self
+        
         
         setupFetchedResultsController()
         
@@ -93,6 +93,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
         
         do {
             try fetchedResultsController.performFetch()

@@ -30,7 +30,6 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         mapView.addAnnotation(annotation)
         renewButton.isEnabled = false
         
-        fetchedResultsController.delegate = self
         
         //center the pin
         let coordinate =  CLLocationCoordinate2D(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
@@ -92,7 +91,8 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     
     
     func getPhotos(){
-        if album.image?.count == 0 {
+        
+        if fetchedResultsController.fetchedObjects?.count == 0{
             FlickerClient.getPhotos(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude) { response, error in
                 if error == nil {
                     guard let response = response else {return}
@@ -121,6 +121,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
         
         do {
             try fetchedResultsController.performFetch()
