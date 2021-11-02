@@ -72,6 +72,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         mapView.deselectAnnotation(view.annotation, animated: false)
         if let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as? PhotoAlbumVC {
             vc.annotation = view.annotation
+            vc.dataController = dataController
             navigationController?.pushViewController(vc, animated: true)
         }
     }
