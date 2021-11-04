@@ -66,14 +66,28 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         }
         return pinView
     }
-    
+     
     //navigate to PhotoAlbumVC
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        mapView.deselectAnnotation(view.annotation, animated: false)
-        if let vc = storyboard?.instantiateViewController(identifier: "PhotoAlbumVC") as? PhotoAlbumVC {
-            vc.annotation = view.annotation
-            vc.dataController = dataController
-            navigationController?.pushViewController(vc, animated: true)
+//        mapView.deselectAnnotation(view.annotation, animated: false)  // otherwise it always shows same pin. you need to deselect
+        
+        let latitudeClicked = view.annotation?.coordinate.latitude
+        let longitudeClicked = view.annotation?.coordinate.longitude
+        
+        //Find the clicked pin in Core Data.
+        if let pins = fetchedResultsController.fetchedObjects{
+            for pin in pins {
+                if pin.latitude == latitudeClicked && pin.longitude == longitudeClicked {
+                    if let vc = storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumVC") as? PhotoAlbumVC {
+                        vc.pin = pin
+                        vc.dataController = dataController
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }else {
+                        fatalError("error!")
+                        
+                    }
+                }
+            }
         }
     }
     
@@ -83,7 +97,11 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         pin.longitude = lon
         pin.creationDate = Date()
         
-        try? dataController?.viewContext.save()
+        do{
+            try dataController?.viewContext.save()
+        }catch{
+            fatalError("Unable to save data")
+        }
     }
     
     fileprivate func setupFetchedResultsController() {

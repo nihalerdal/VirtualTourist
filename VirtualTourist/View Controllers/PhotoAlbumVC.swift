@@ -14,7 +14,8 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
-    var album: Photo!
+    var photo: Photo!
+    var pin: Pin!
     
     var annotation: MKAnnotation!
     
@@ -117,6 +118,9 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     
     func setupFetchedResultsController(){
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin == %@", pin) //fetch to the photos spesific to the clicked pin.
+        fetchRequest.predicate = predicate
+        
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
