@@ -23,7 +23,6 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         mapView.delegate = self
         mapView.isUserInteractionEnabled = true
         
-        
         setupFetchedResultsController()
         
     }
@@ -102,6 +101,8 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         }catch{
             fatalError("Unable to save data")
         }
+        
+        setupFetchedResultsController() //-> after saving the pin, grab pins from core data again so that it includes the new one.
     }
     
     fileprivate func setupFetchedResultsController() {
