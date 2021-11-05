@@ -68,7 +68,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
      
     //navigate to PhotoAlbumVC
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        mapView.deselectAnnotation(view.annotation, animated: false)  // otherwise it always shows same pin. you need to deselect
+        mapView.deselectAnnotation(view.annotation, animated: false)  // otherwise it always shows same pin. you need to deselect
         
         let latitudeClicked = view.annotation?.coordinate.latitude
         let longitudeClicked = view.annotation?.coordinate.longitude
@@ -79,6 +79,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
                 if pin.latitude == latitudeClicked && pin.longitude == longitudeClicked {
                     if let vc = storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumVC") as? PhotoAlbumVC {
                         vc.pin = pin
+//                        vc.annotation = view.annotation
                         vc.dataController = dataController
                         self.navigationController?.pushViewController(vc, animated: true)
                     }else {

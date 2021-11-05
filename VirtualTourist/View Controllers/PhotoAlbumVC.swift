@@ -17,8 +17,6 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     var photo: Photo!
     var pin: Pin!
     
-    var annotation: MKAnnotation!
-    
     var dataController : DataController!
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     
@@ -28,27 +26,23 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         collectionView.delegate = self
         collectionView.dataSource = self
         mapView.delegate = self
-        mapView.addAnnotation(annotation)
-        renewButton.isEnabled = false
         
-        
-        //center the pin
-        let coordinate =  CLLocationCoordinate2D(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
-        mapView.setCenter(coordinate, animated: true)
-        
-        setupFetchedResultsController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        setupFetchedResultsController()
         getPhotos()
+        renewButton.isEnabled = false
+        
+        setupMap()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
+
         let reuseId = "pin"
-        
+
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        
+
         if  pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView?.tintColor = .red
@@ -69,39 +63,57 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let  aPhoto = fetchedResultsController.object(at: indexPath)
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         
-        FlickerClient.downloadPhotos(imageURL: URL(string: (aPhoto.url)!)!) { data, error in
+        let aPhoto = fetchedResultsController.object(at: indexPath)
+        
+        if let image = aPhoto.image {
+            cell.imageView.image = UIImage(data: image)
+        }else {
+            
+            FlickerClient.downloadPhotos(imageURL: URL(string: (aPhoto.url)!)!) { data, error in
                 
-                if error == nil {
-                guard let data = data else {return}
-                let image = UIImage(data: data)
-                cell.imageView.image = image
-                    try? self.dataController.viewContext.save()
+                
+                if let data = data {
+                    let image = UIImage(data: data)
+                    aPhoto.image = data
+                    cell.imageView.image = image
+                    
+                    do {
+                        try self.dataController.viewContext.save()
+                    }catch{
+                        fatalError("Unable to save photos: \(error.localizedDescription)")
+                    }
+                    
                 }else{
                     fatalError("error:\(error?.localizedDescription)")
                 }
             }
-        
+        }
         return cell
-        
     }
+
     
     
     
     func getPhotos(){
         
-        if fetchedResultsController.fetchedObjects?.count == 0{
-            FlickerClient.getPhotos(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude) { response, error in
+        if fetchedResultsController.fetchedObjects!.count == 0 {
+            FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
                 if error == nil {
                     guard let response = response else {return}
                     for image in response.photos.photo{
                         let photo = Photo(context: self.dataController.viewContext)
                         photo.creationDate = Date()
                         photo.url = "https://live.staticflickr.com/\(image.server)/\(image.id)_\(image.secret).jpg"
-                        try? self.dataController.viewContext.save()
+
+                        do {
+                            try self.dataController.viewContext.save()
+                        }catch{
+                            fatalError("Unable to save photos: \(error.localizedDescription)")
+                        }
+                        
                     }
                     print("album saved")
                 }else{
@@ -132,6 +144,20 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         } catch {
             fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
         }
+    }
+    
+    
+    func setupMap(){
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate.longitude = pin.longitude
+        annotation.coordinate.latitude = pin.latitude
+        mapView.addAnnotation(annotation)
+        
+        //center the pin
+        let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+        mapView.setCenter(coordinate, animated: true)
+        
     }
     
 }
