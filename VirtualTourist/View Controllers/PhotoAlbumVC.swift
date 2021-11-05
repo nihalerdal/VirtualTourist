@@ -14,6 +14,15 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
+    
+    
+    @IBOutlet weak var collectionLayout: UICollectionViewFlowLayout!{
+        didSet {
+            collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        }
+    }
+    
+    
     var photo: Photo!
     var pin: Pin!
     
@@ -30,10 +39,9 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     }
     
     override func viewWillAppear(_ animated: Bool) {
+//        renewButton.isEnabled = false
         setupFetchedResultsController()
         getPhotos()
-        renewButton.isEnabled = false
-        
         setupMap()
     }
     
@@ -58,6 +66,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        setupFetchedResultsController()
         return fetchedResultsController.sections?[section].numberOfObjects ?? 0
     }
     
@@ -107,13 +116,15 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                         let photo = Photo(context: self.dataController.viewContext)
                         photo.creationDate = Date()
                         photo.url = "https://live.staticflickr.com/\(image.server)/\(image.id)_\(image.secret).jpg"
-
+                        photo.pin = self.pin //DONT FORGET THIS before saving!!!!
+                        
                         do {
                             try self.dataController.viewContext.save()
                         }catch{
                             fatalError("Unable to save photos: \(error.localizedDescription)")
                         }
                         
+                        self.collectionView.reloadData()
                     }
                     print("album saved")
                 }else{

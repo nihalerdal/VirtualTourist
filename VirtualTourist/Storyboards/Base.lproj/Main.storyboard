@@ -78,6 +78,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="uT3-Go-0Az"/>
                     <connections>
+                        <outlet property="collectionLayout" destination="1oX-S9-Rpt" id="Ppx-d8-ygk"/>
                         <outlet property="collectionView" destination="Nbw-y1-eAW" id="TtK-JK-LAu"/>
                         <outlet property="mapView" destination="UFP-aY-cpY" id="5RG-Vd-o8x"/>
                         <outlet property="renewButton" destination="jRo-8B-ivM" id="fBj-9n-UhS"/>
