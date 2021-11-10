@@ -8,6 +8,11 @@
 import Foundation
 import UIKit
 
-struct DataModel {
-    static var photos = [FlickerPhoto]()
+struct KeysForZoomLevel{
+    
+    static let latitude: String = "latitude"
+    static let longitude: String = "longitude"
+    static let latitudeDelta: String = "latitudeDelta"
+    static let longitudeDelta: String = "longitudeDelta"
+    
 }

@@ -24,6 +24,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         mapView.isUserInteractionEnabled = true
         
         setupFetchedResultsController()
+        loadZoomLevel()
         
     }
     
@@ -31,6 +32,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         mapView.isUserInteractionEnabled = true
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longTap(gesture: )))
         mapView.addGestureRecognizer(gestureRecognizer)
+        saveZoomLevel()
    
     }
     
@@ -48,7 +50,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         }
     }
     
-    //pin view decoration - right callout accessory view
+    //MARK: pin view decoration - right callout accessory view
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
@@ -66,7 +68,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         return pinView
     }
      
-    //navigate to PhotoAlbumVC
+    //MARK: navigate to PhotoAlbumVC
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         mapView.deselectAnnotation(view.annotation, animated: false)  // otherwise it always shows same pin. you need to deselect
         
@@ -121,4 +123,48 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
             fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
         }
     }
+        
+    //MARK: for the first time
+    func saveZoomLevel(){
+        
+        UserDefaults.standard.set(mapView.centerCoordinate.latitude, forKey: KeysForZoomLevel.latitude)
+        UserDefaults.standard.set(mapView.centerCoordinate.longitude, forKey: KeysForZoomLevel.longitude)
+        UserDefaults.standard.set(mapView.region.span.latitudeDelta, forKey: KeysForZoomLevel.latitudeDelta)
+        UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: KeysForZoomLevel.longitudeDelta)
+        
+    }
+    
+    //MARK: if it has launched before
+    func loadZoomLevel(){
+        
+        guard let longitude = UserDefaults.standard.object(forKey: KeysForZoomLevel.longitude) as? Double else {return}
+        guard let latitude = UserDefaults.standard.object(forKey: KeysForZoomLevel.latitude) as? Double else {return}
+        guard let latitudeDelta = UserDefaults.standard.object(forKey: KeysForZoomLevel.latitudeDelta) as? Double else {return}
+        guard let longitudeDelta = UserDefaults.standard.object(forKey: KeysForZoomLevel.longitudeDelta) as? Double else {return}
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        
+        
+        //MARK: create a pin objects
+        if let pins = fetchedResultsController.fetchedObjects {
+            for pin in pins {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+                mapView.addAnnotation(annotation)
+                
+            }
+        }
+        
+    }
+    
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+            saveZoomLevel()
+            
+    }
+
+    
 }
