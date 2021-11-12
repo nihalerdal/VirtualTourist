@@ -14,8 +14,6 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
-    
-    
     @IBOutlet weak var collectionLayout: UICollectionViewFlowLayout!{
         didSet {
             collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
@@ -77,29 +75,45 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         
         let aPhoto = fetchedResultsController.object(at: indexPath)
         
-        if let image = aPhoto.image {
-            cell.imageView.image = UIImage(data: image)
-        }else {
-            
-            FlickerClient.downloadPhotos(imageURL: URL(string: (aPhoto.url)!)!) { data, error in
+        renewButton.isEnabled = false
+        cell.activityIndicator.startAnimating()
+        
+        
+        if let url = aPhoto.url{
+            if let image = aPhoto.image{
+                cell.imageView.image = UIImage(data: image)
+            }else{
                 
-                
-                if let data = data {
-                    let image = UIImage(data: data)
-                    aPhoto.image = data
-                    cell.imageView.image = image
+                FlickerClient.downloadPhotos(imageURL: URL(string: (aPhoto.url)!)!) { data, error in
                     
-                    do {
-                        try self.dataController.viewContext.save()
-                    }catch{
-                        fatalError("Unable to save photos: \(error.localizedDescription)")
+                    
+                    if let data = data {
+                        let image = UIImage(data: data)
+                        aPhoto.image = data
+                        cell.imageView.image = image
+                        
+                        do {
+                            try self.dataController.viewContext.save()
+                        } catch {
+                            fatalError("Unable to save photos: \(error.localizedDescription)")
+                        }
+                        
+                    } else {
+                        fatalError("error:\(error?.localizedDescription)")
                     }
-                    
-                }else{
-                    fatalError("error:\(error?.localizedDescription)")
                 }
             }
+            
+        } else {
+            
+            let placeholderImage = UIImage(named: "Placeholder")
+            cell.imageView.image = placeholderImage
         }
+        
+        cell.activityIndicator.isHidden = true
+        cell.activityIndicator.stopAnimating()
+        renewButton.isEnabled = true
+        
         return cell
     }
 
@@ -109,6 +123,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     func getPhotos(){
         
         if fetchedResultsController.fetchedObjects!.count == 0 {
+            renewButton.isEnabled = false
             FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
                 if error == nil {
                     guard let response = response else {return}
@@ -132,7 +147,6 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                 }
             }
         }else{
-            renewButton.isEnabled = true
             return
         }
     }
@@ -173,3 +187,14 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     
 }
 
+//extension PhotoAlbumVC :UICollectionViewDelegateFlowLayout {
+//
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//
+//
+////        return CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+//
+//    }
+//}
