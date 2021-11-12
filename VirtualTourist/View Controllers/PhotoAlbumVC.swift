@@ -84,8 +84,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                 cell.imageView.image = UIImage(data: image)
             }else{
                 
-                FlickerClient.downloadPhotos(imageURL: URL(string: (aPhoto.url)!)!) { data, error in
-                    
+                FlickerClient.downloadPhotos(imageURL: URL(string: (url))!) { data, error in
                     
                     if let data = data {
                         let image = UIImage(data: data)
@@ -103,20 +102,17 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                     }
                 }
             }
+            cell.activityIndicator.isHidden = true
+            cell.activityIndicator.stopAnimating()
+            self.renewButton.isEnabled = true
+        }else{
             
-        } else {
-            
-            let placeholderImage = UIImage(named: "Placeholder")
+            let placeholderImage = UIImage(systemName: "photo")
             cell.imageView.image = placeholderImage
         }
-        
-        cell.activityIndicator.isHidden = true
-        cell.activityIndicator.stopAnimating()
-        renewButton.isEnabled = true
-        
         return cell
     }
-
+    
     
     
     
@@ -125,7 +121,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         if fetchedResultsController.fetchedObjects!.count == 0 {
             renewButton.isEnabled = false
             FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
-                if error == nil {
+                if error == nil && response?.photos.photo != nil {
                     guard let response = response else {return}
                     for image in response.photos.photo{
                         let photo = Photo(context: self.dataController.viewContext)
