@@ -43,6 +43,21 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         setupMap()
     }
     
+    @IBAction func newCollection(_ sender: Any) {
+        
+        renewButton.isEnabled = false
+        
+        if let album  = fetchedResultsController.fetchedObjects{
+            for photo in album {
+                dataController.viewContext.delete(photo)
+            }
+        }
+        getPhotos()
+        collectionView.reloadData()
+        renewButton.isEnabled = true
+    }
+
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
 
         let reuseId = "pin"

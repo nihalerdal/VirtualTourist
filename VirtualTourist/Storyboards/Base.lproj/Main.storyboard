@@ -73,6 +73,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRo-8B-ivM">
                                 <rect key="frame" x="155" y="768" width="104" height="30"/>
                                 <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="newCollection:" destination="2ey-g0-i9H" eventType="touchUpInside" id="a9x-hH-9xx"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xxv-bc-0gf"/>
