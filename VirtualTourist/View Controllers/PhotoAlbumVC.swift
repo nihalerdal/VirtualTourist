@@ -192,7 +192,13 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         
         //center the pin
         let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+        //set zoom level
+        let span = MKCoordinateSpan(latitudeDelta: 0.275, longitudeDelta: 0.275)
+        
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        
         mapView.setCenter(coordinate, animated: true)
+        mapView.setRegion(region, animated: true)
         
     }
     

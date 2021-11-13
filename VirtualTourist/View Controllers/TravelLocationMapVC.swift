@@ -81,7 +81,6 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
                 if pin.latitude == latitudeClicked && pin.longitude == longitudeClicked {
                     if let vc = storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumVC") as? PhotoAlbumVC {
                         vc.pin = pin
-//                        vc.annotation = view.annotation
                         vc.dataController = dataController
                         self.navigationController?.pushViewController(vc, animated: true)
                     }else {
