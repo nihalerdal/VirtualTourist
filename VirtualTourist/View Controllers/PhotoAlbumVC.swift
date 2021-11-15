@@ -32,6 +32,9 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.isUserInteractionEnabled = true
+        collectionView.allowsSelection = true
+        collectionView.allowsMultipleSelection = true
         mapView.delegate = self
         
     }
@@ -196,9 +199,25 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         let span = MKCoordinateSpan(latitudeDelta: 0.275, longitudeDelta: 0.275)
         
         let region = MKCoordinateRegion(center: coordinate, span: span)
-        
-        mapView.setCenter(coordinate, animated: true)
         mapView.setRegion(region, animated: true)
+        
+    }
+    
+    //MARK: REMOVE image by tapping
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let objectSelected = fetchedResultsController.object(at: indexPath)
+        print("item selected")
+        dataController.viewContext.delete(objectSelected)
+        print("item deleted from db")
+        
+        if var photos = fetchedResultsController.fetchedObjects{
+            photos.remove(at: indexPath.row)
+        }
+        
+        try? dataController.viewContext.save()
+        collectionView.reloadData()
+        
         
     }
     
