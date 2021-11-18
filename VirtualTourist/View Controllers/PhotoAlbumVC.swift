@@ -14,13 +14,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
-//    @IBOutlet weak var collectionLayout: UICollectionViewFlowLayout!{
-//       didSet {
-//          collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//       }
-//    }
-    
-    
+
     var photo: Photo!
     var pin: Pin!
     
@@ -55,6 +49,9 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                 dataController.viewContext.delete(photo)
             }
         }
+        //MARK: after deleting, you need to fetch again so that to make getPhotos() know there is no photo. otherwise it'll just return.
+        setupFetchedResultsController()
+        
         getPhotos()
         collectionView.reloadData()
         renewButton.isEnabled = true
@@ -223,20 +220,3 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     
 }
 
-//extension PhotoAlbumVC :UICollectionViewDelegateFlowLayout {
-//
-//
-//    var numberOfImtemsPerRow: Int = 3 {
-//        didSet
-//        invalidateLayout()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//
-//
-//        return CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-//
-//    }
-//}
-//}
