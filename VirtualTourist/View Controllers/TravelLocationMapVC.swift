@@ -46,6 +46,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
             persistPin(lat: coordinate.latitude, lon: coordinate.longitude)
+            print("pin: \(coordinate.latitude), \(coordinate.longitude)")
             
         }
     }

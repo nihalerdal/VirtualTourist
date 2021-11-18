@@ -136,7 +136,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         if fetchedResultsController.fetchedObjects!.count == 0 {
             renewButton.isEnabled = false
             FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
-                if error == nil && response?.photos.photo != nil {
+                if error == nil && response?.photos.photo != nil && response?.photos.total != 0 {
                     guard let response = response else {return}
                     for image in response.photos.photo{
                         let photo = Photo(context: self.dataController.viewContext)
@@ -154,7 +154,10 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                     }
                     print("album saved")
                 }else{
-                    fatalError("error : \(String(describing: error?.localizedDescription))")
+                    print("No photo downloaded")
+                    self.setupFetchedResultsController()
+                    self.collectionView.reloadData()
+//                    fatalError("error : \(String(describing: error?.localizedDescription))")
                 }
             }
         }else{
@@ -212,7 +215,8 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
             photos.remove(at: indexPath.row)
         }
         
-        try? dataController.viewContext.save()
+//        try? dataController.viewContext.save()
+//        setupFetchedResultsController()
         collectionView.reloadData()
         
         
