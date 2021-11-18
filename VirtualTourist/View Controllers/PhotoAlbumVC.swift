@@ -14,7 +14,8 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
-
+    @IBOutlet weak var noImageLabel: UILabel!
+    
     var photo: Photo!
     var pin: Pin!
     
@@ -30,6 +31,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         collectionView.allowsSelection = true
         collectionView.allowsMultipleSelection = true
         mapView.delegate = self
+        noImageLabel.isHidden = true
         
     }
     
@@ -155,8 +157,7 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                     print("album saved")
                 }else{
                     print("No photo downloaded")
-                    self.setupFetchedResultsController()
-                    self.collectionView.reloadData()
+                    self.noImageLabel.isHidden = false
 //                    fatalError("error : \(String(describing: error?.localizedDescription))")
                 }
             }
