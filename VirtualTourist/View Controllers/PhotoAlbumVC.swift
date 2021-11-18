@@ -14,11 +14,11 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var renewButton: UIButton!
-    @IBOutlet weak var collectionLayout: UICollectionViewFlowLayout!{
-        didSet {
-            collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
-    }
+//    @IBOutlet weak var collectionLayout: UICollectionViewFlowLayout!{
+//       didSet {
+//          collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+//       }
+//    }
     
     
     var photo: Photo!
@@ -226,11 +226,17 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
 //extension PhotoAlbumVC :UICollectionViewDelegateFlowLayout {
 //
 //
+//    var numberOfImtemsPerRow: Int = 3 {
+//        didSet
+//        invalidateLayout()
+//    }
+//
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //
 //
 //
-////        return CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+//        return CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
 //
 //    }
+//}
 //}
