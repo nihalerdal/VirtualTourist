@@ -42,9 +42,14 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
             //get coordinates and create the pin
             let location = gesture.location(in: mapView)
             let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
+            
+            //add annotaion
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
+            
+            mapView.setCenter(mapView.centerCoordinate, animated: true)
+            
             persistPin(lat: coordinate.latitude, lon: coordinate.longitude)
             print("pin: \(coordinate.latitude), \(coordinate.longitude)")
             

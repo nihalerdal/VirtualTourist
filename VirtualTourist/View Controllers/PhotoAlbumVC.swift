@@ -158,7 +158,6 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
                 }else{
                     print("No photo downloaded")
                     self.noImageLabel.isHidden = false
-//                    fatalError("error : \(String(describing: error?.localizedDescription))")
                 }
             }
         }else{

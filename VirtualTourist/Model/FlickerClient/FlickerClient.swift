@@ -72,20 +72,6 @@ class FlickerClient{
         }
     }
     
-    
-//    class func fetchURLs(serverId: String, id: String, secret: String, completion: @escaping (String?, Error?)-> Void) {
-//        let task = URLSession.shared.dataTask(with: Endpoints.getUrls(serverId, id, secret).url){data, response, error in
-//            if let response = response {
-//                DispatchQueue.main.async {
-//
-//                    completion(String( response, nil)
-//                }
-//            }else{
-//                completion(nil, error)
-//            }
-//        }
-//    }
-    
     class func downloadPhotos(imageURL: URL, completion: @escaping (Data?, Error?) throws -> Void){
         
         let task = URLSession.shared.dataTask(with: imageURL) { data, response, error in
