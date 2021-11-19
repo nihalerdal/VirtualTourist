@@ -29,11 +29,13 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         mapView.isUserInteractionEnabled = true
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longTap(gesture: )))
         mapView.addGestureRecognizer(gestureRecognizer)
         saveZoomLevel()
-   
+        
     }
     
     @objc func longTap(gesture: UILongPressGestureRecognizer ){
@@ -73,7 +75,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
         }
         return pinView
     }
-     
+    
     //MARK: navigate to PhotoAlbumVC
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         mapView.deselectAnnotation(view.annotation, animated: false)  // otherwise it always shows same pin. you need to deselect
@@ -128,7 +130,7 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
             fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
         }
     }
-        
+    
     //MARK: for the first time
     func saveZoomLevel(){
         
@@ -166,10 +168,9 @@ class TravelLocationMapVC: UIViewController, MKMapViewDelegate, NSFetchedResults
     
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-
-            saveZoomLevel()
-            
+        
+        saveZoomLevel()
+        
     }
-
     
 }

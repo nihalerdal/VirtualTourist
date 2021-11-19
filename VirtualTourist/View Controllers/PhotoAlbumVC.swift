@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate {
+class PhotoAlbumVC: UIViewController , MKMapViewDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -36,7 +36,8 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        renewButton.isEnabled = false
+        super.viewWillAppear(animated)
+        renewButton.isEnabled = false
         setupFetchedResultsController()
         getPhotos()
         setupMap()
@@ -55,17 +56,17 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         setupFetchedResultsController()
         
         getPhotos()
-        collectionView.reloadData()
+        //        collectionView.reloadData()
         renewButton.isEnabled = true
     }
-
+    
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-
+        
         let reuseId = "pin"
-
+        
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-
+        
         if  pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView?.tintColor = .red
@@ -75,6 +76,96 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         return pinView
     }
     
+    func getPhotos(){
+        
+        if fetchedResultsController.fetchedObjects!.count == 0 {
+            renewButton.isEnabled = false
+            FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
+                if error == nil && response?.photos.photo != nil && response?.photos.total != 0 {
+                    guard let response = response else {return}
+                    for image in response.photos.photo{
+                        let photo = Photo(context: self.dataController.viewContext)
+                        photo.creationDate = Date()
+                        photo.url = "https://live.staticflickr.com/\(image.server)/\(image.id)_\(image.secret).jpg"
+                        photo.pin = self.pin //DONT FORGET THIS before saving!!!!
+                        
+                        do {
+                            try self.dataController.viewContext.save()
+                        }catch{
+                            fatalError("Unable to save photos: \(error.localizedDescription)")
+                        }
+                        
+                        self.collectionView.reloadData()
+                    }
+                    print("album saved")
+                }else{
+                    print("No photo downloaded")
+                    self.noImageLabel.isHidden = false
+                }
+            }
+        }else{
+            return
+        }
+    }
+    
+    
+    
+    func setupFetchedResultsController(){
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin == %@", pin) //fetch to the photos spesific to the clicked pin.
+        fetchRequest.predicate = predicate
+        
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    func setupMap(){
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate.longitude = pin.longitude
+        annotation.coordinate.latitude = pin.latitude
+        mapView.addAnnotation(annotation)
+        
+        //center the pin
+        let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+        //set zoom level
+        let span = MKCoordinateSpan(latitudeDelta: 0.275, longitudeDelta: 0.275)
+        
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        
+    }
+    
+    //MARK: REMOVE image by tapping
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let objectSelected = fetchedResultsController.object(at: indexPath)
+        dataController.viewContext.delete(objectSelected)
+        
+        if var photos = fetchedResultsController.fetchedObjects{
+            photos.remove(at: indexPath.row)
+        }
+        
+        try? dataController.viewContext.save() // after deleting, you have to save to persist the deleting.
+        setupFetchedResultsController()
+        collectionView.reloadData()
+        
+        
+    }
+    
+}
+
+extension PhotoAlbumVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return fetchedResultsController.sections?.count ?? 1
@@ -129,98 +220,5 @@ class PhotoAlbumVC: UIViewController , MKMapViewDelegate, UICollectionViewDelega
         }
         return cell
     }
-    
-    
-    
-    
-    func getPhotos(){
-        
-        if fetchedResultsController.fetchedObjects!.count == 0 {
-            renewButton.isEnabled = false
-            FlickerClient.getPhotos(latitude: pin.latitude, longitude: pin.longitude) { response, error in
-                if error == nil && response?.photos.photo != nil && response?.photos.total != 0 {
-                    guard let response = response else {return}
-                    for image in response.photos.photo{
-                        let photo = Photo(context: self.dataController.viewContext)
-                        photo.creationDate = Date()
-                        photo.url = "https://live.staticflickr.com/\(image.server)/\(image.id)_\(image.secret).jpg"
-                        photo.pin = self.pin //DONT FORGET THIS before saving!!!!
-                        
-                        do {
-                            try self.dataController.viewContext.save()
-                        }catch{
-                            fatalError("Unable to save photos: \(error.localizedDescription)")
-                        }
-                        
-                        self.collectionView.reloadData()
-                    }
-                    print("album saved")
-                }else{
-                    print("No photo downloaded")
-                    self.noImageLabel.isHidden = false
-                }
-            }
-        }else{
-            return
-        }
-    }
-    
-  
-    
-    func setupFetchedResultsController(){
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        let predicate = NSPredicate(format: "pin == %@", pin) //fetch to the photos spesific to the clicked pin.
-        fetchRequest.predicate = predicate
-        
-        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController.delegate = self
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func setupMap(){
-        
-        let annotation = MKPointAnnotation()
-        annotation.coordinate.longitude = pin.longitude
-        annotation.coordinate.latitude = pin.latitude
-        mapView.addAnnotation(annotation)
-        
-        //center the pin
-        let coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-        //set zoom level
-        let span = MKCoordinateSpan(latitudeDelta: 0.275, longitudeDelta: 0.275)
-        
-        let region = MKCoordinateRegion(center: coordinate, span: span)
-        mapView.setRegion(region, animated: true)
-        
-    }
-    
-    //MARK: REMOVE image by tapping
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let objectSelected = fetchedResultsController.object(at: indexPath)
-        print("item selected")
-        dataController.viewContext.delete(objectSelected)
-        print("item deleted from db")
-        
-        if var photos = fetchedResultsController.fetchedObjects{
-            photos.remove(at: indexPath.row)
-        }
-        
-//        try? dataController.viewContext.save()
-//        setupFetchedResultsController()
-        collectionView.reloadData()
-        
-        
-    }
-    
 }
 
