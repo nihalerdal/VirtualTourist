@@ -12,8 +12,18 @@ This app was completed as an assignment for Udacity course - Become an iOS Devel
 Language: Swift  
 Assignment for: Udacity - Become an iOS Developer
 
+<img src="https://user-images.githubusercontent.com/61894386/174412340-37bc9459-2430-47c4-8d8d-c75fcd65de78.gif" width="320" height="700">
+
+
 ## Contributing
-Please feel free to contribute to **Virtual Tourist**. Fork and clone this repository, then make a pull request once you have pushed your changes.
+Please feel free to contribute to **Virtual Tourist**. 
+To contribute, follow these steps:
+
+1. Fork this repository.
+2. Create a branch: `git checkout -b <branch_name>`.
+3. Make your changes and commit them: `git commit -m '<commit_message>'`
+4. Push to the original branch: `git push origin <project_name>/<location>`
+5. Create the pull request.
 
 ## Setup
 This projects can run without any additional setup. 
