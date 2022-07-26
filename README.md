@@ -1,11 +1,11 @@
 # Virtual Tourist
 
 ## Overview
-Virtual Tourist app allows users to specify travel locations around the world and create virtual photo albums for each location. The locations and photo albums will be stored in Core Data.
+Virtual Tourist app allows users to specify travel locations around the world and create virtual photo albums for each location. The locations and photo albums will be stored in Core Data. User can delete any photo from album by tapping and can renew the page via New Collection button. 
 
 This app was completed as an assignment for Udacity course - Become an iOS Developer - and uses fundamental princinples of iOS development such as:
  
-• URLSessions to interact with a public restful API
+• URLSessions to interact with a public restful API(Flickr)
 • Network Requests
 • Core Data for local persistence of an object structure
 
